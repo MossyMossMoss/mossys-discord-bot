@@ -17,9 +17,9 @@ gets the hottest [imagenum] images from r/[subbreddit] and sends them
 
 must run on linux to use /reddit  
 dotenv  
-```pip install dotenv```
+```pip install dotenv```  
 discord.py  
-```pip install discord.py```
+```pip install discord.py```  
 a discord account  
 a discord bot setup https://discord.com/developers/applications  
 
