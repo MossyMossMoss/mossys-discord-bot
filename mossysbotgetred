@@ -1,0 +1,47 @@
+#!/bin/sh
+
+# If notify-send is not installed, use echo as notifier
+notifier="echo"
+
+# Otherwise assign the first argument to the
+# subreddit variable
+subreddit="$1"
+
+# Default directory used to store the feed file and fetched images
+cachedir="/tmp/mossybot"
+
+# If cachedir does not exist, create it
+if [ ! -d "$cachedir" ]; then
+	echo "$cachedir does not exist, creating..."
+	mkdir -p "$cachedir"
+fi
+
+if [ -f redimgs ]; then
+	echo "removing redimgs"
+	rm redimgs
+fi
+
+# Limit the maximum number of requests to make
+limit="$2"
+
+# Subreddit page
+page="hot"
+
+# Send a notification
+$notifier "Getred" "Downloading Your Images"
+
+# Download the subreddit feed, containing only the
+# first 100 entries (limit), and store it inside
+# cachedir/tmp.json
+curl -H "User-agent: 'your bot 0.1'" "https://www.reddit.com/r/$subreddit/$page.json?limit=$limit" > "$cachedir/tmp.json"
+
+# Create a list of images
+imgs=$(jq '.' < "$cachedir/tmp.json" | grep url_overridden_by_dest | grep -Eo "http(s|)://.*(jpg|png)\b" | sort -u)
+
+# If there are no images, exit
+[ -z "$imgs" ] && $notifier "Gedred" "sadly, there are no images for subreddit $subreddit, please try again later!" && exit 1
+
+echo $imgs >> redimgs
+
+# Once finished, remove all of the cached images
+rm "${cachedir:?}"/*
