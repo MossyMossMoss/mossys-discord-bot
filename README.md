@@ -1,8 +1,8 @@
---- Mossy's Discord Bot ---
+# Mossy's Discord Bot
 
 A simple, easy to understand discord bot written in python. Will be updated whenever I add new features.
 
---- Current Commands ---
+## Current Commands
 
 /rand optional[name, pfp] optional[name, pfp] ...
 	picks a random member of the server and displays infomation about them
@@ -14,7 +14,7 @@ A simple, easy to understand discord bot written in python. Will be updated when
 /reddit [subreddit] optional[imagenum]
 	gets the hottest [imagenum] images from r/[subbreddit] and sends them
 
---- prerequisites ---
+## prerequisites
 
 must run on linux to use /reddit
 dotenv
@@ -24,10 +24,11 @@ discord.py
 a discord account
 a discord bot setup https://discord.com/developers/applications
 
---- installation ---
+## installation
 
 create a .env file in the bot's directory with the following text
 
-# .env
+```# .env
 DISCORD_TOKEN=DiscordBotToken
 DISCORD_GUILD=NameOfDiscordServer
+```
