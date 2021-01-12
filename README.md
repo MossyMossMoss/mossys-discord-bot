@@ -10,7 +10,6 @@ picks a random member of the server and displays infomation about them
 repeats [message]  
 ```/dm [username#tag] [message]```  
 dm's a user [message]  
-- need to add @ functionality  
 ```/reddit [subreddit] optional[imagenum]```  
 gets the hottest [imagenum] images from r/[subbreddit] and sends them  
 
