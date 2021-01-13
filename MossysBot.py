@@ -54,11 +54,13 @@ async def idiot(ctx, *infos):
 
 @bot.command(name="echo", help="repeat a message. syntax: /echo message")
 async def echo(ctx, *messages):
-    #print(await ctx.channel.history(limit = 10).find(lambda m: m.author.id == ctx.author.id)).delete()
     completemessage = ""
     for message in messages:
         completemessage += message + " "
-    await ctx.send(completemessage)
+    if completemessage.lower() == "i am stupid ":
+        await ctx.send("no, you are")
+    else:
+        await ctx.send(completemessage)
 
 @bot.command(name="dm", help="direct message someone something. syntax: /dm message")
 async def dm(ctx, strrecipient, *messages):
