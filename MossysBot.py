@@ -17,6 +17,8 @@ random.seed(random.random())
 
 bot = commands.Bot(command_prefix="/", intents=intents)
 
+MaxImages = 10
+
 def find_member(strmember):
     for member in guild.members:
         if str(member) == strmember:
@@ -34,14 +36,17 @@ def parse_images(string):
     imgs.append(tmpimg)
     return imgs
 
+def find_banned_words():
+    bannedwordsfile = open("bannedwords", "r")
+    bannedwords = bannedwordsfile.read().split("\n")
+    bannedwordsfile.close()
+    return bannedwords
+
 @bot.event
 async def on_ready():
     global guild 
     guild = discord.utils.find(lambda g: g.name == GUILD, bot.guilds)
     print("Connected to " + str(guild.name))
-    print("Current members:")
-    for member in guild.members:
-        print(member)
 
 @bot.command(name="rand", help="picks a random person's name or pfp and displays it. syntax: /rand [name, pfp] [name, pfp] ...")
 async def idiot(ctx, *infos):
@@ -55,30 +60,36 @@ async def idiot(ctx, *infos):
 @bot.command(name="echo", help="repeat a message. syntax: /echo message")
 async def echo(ctx, *messages):
     completemessage = ""
+    bannedwords = find_banned_words()
     for message in messages:
+        if str(message).lower() in bannedwords:
+            await ctx.send("Message uses words found in banned words list")
+            return
         completemessage += message + " "
     if completemessage.lower() == "i am stupid ":
-        await ctx.send("no, you are")
+        await ctx.send("No, you are")
     else:
         await ctx.send(completemessage)
 
 @bot.command(name="dm", help="direct message someone something. syntax: /dm message")
-async def dm(ctx, strrecipient, *messages):
+async def dm(ctx, member : discord.Member, *messages):
     completemessage = ""
     for message in messages:
         completemessage += message + " "
-    recipient = find_member(strrecipient)
-    if recipient:
-        channel = await recipient.create_dm()
-        await channel.send(completemessage)
+    channel = await member.create_dm()
+    await channel.send(completemessage)
 
 @bot.command(name="reddit", help="get the hottest images from a subreddit. syntax: /rand subreddit number_of_images(default 3) ...")
 async def reddit(ctx, subreddit, *num):
     imgnum = 3
     if len(num) > 0:
-        if int(num[0]) <= 10:
+        if int(num[0]) <= MaxImages:
             imgnum = num[0]
-    os.system("./mossysbotgetred " + subreddit + " " + str(imgnum))
+        else:
+            await ctx.send("Number exceeds maximum image count (" + str(MaxImages) + ")")
+    else:
+        await ctx.send("Number of images not provided. Defaulting to 3")
+    os.system("./getred " + subreddit + " " + str(imgnum))
     try:
         redimgs = open("redimgs", "r")
         imgs = parse_images(redimgs.read())

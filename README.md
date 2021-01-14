@@ -15,13 +15,17 @@ gets the hottest [imagenum] images from r/[subbreddit] and sends them
 
 ## prerequisites
 
-must run on linux to use /reddit  
-dotenv  
+### jq
+Ubuntu or Debian
+```apt-get install jq```
+Arch
+```sudo pacman -S jq```
+### dotenv  
 ```pip install dotenv```  
-discord.py  
+### discord.py  
 ```pip install discord.py```  
-a discord account  
-a discord bot setup https://discord.com/developers/applications  
+### a discord account  
+### a discord bot setup https://discord.com/developers/applications  
 
 ## installation
 
@@ -31,3 +35,6 @@ create a .env file in the bot's directory with the following text
 DISCORD_TOKEN=DiscordBotToken
 DISCORD_GUILD=NameOfDiscordServer
 ```
+
+## credits
+Credit to https://github.com/Bugswriter/redyt for the original code for ```getred```
